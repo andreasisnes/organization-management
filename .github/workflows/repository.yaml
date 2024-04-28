@@ -1,0 +1,36 @@
+name: Repository
+on: [push]
+
+permissions:
+  id-token: write
+  contents: write
+
+env:
+  TERRAFORM_VERSION: 1.7.4
+
+jobs:
+  deploy:
+    environment: dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v1
+      - name: AZ login
+        uses: azure/login@v1
+        with:
+          client-id: 3652cacb-6e22-49fd-9c08-bca5c11a285c
+          tenant-id: 90633377-f76d-4d53-9675-43240c2d6f62
+          subscription-id: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      - name: Terraform Install
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+      - name: Terraform Init
+        working-directory: Repositories
+        run: terraform init \
+          -backend-config="resource_group_name=${{ variables.ARM_RESOURCE_GROUP_NAME }}" \
+          -backend-config="storage_account_name=${{ variables.ARM_STORAGE_ACCOUNT_NAME }}" \
+          -backend-config="container_name=github-${GITHUB_REPOSITORY#*/}-dev \
+          -backend-config="key=tfstate" \
+          -backend-config="use_azuread_auth=true" \
