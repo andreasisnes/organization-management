@@ -25,8 +25,7 @@ provider "github" {
 
 provider "azurerm" {
   use_oidc = true
-  features {
-  }
+  features {}
 }
 
 locals {

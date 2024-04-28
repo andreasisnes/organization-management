@@ -16,7 +16,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v1
       - name: AZ login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: 3652cacb-6e22-49fd-9c08-bca5c11a285c
           tenant-id: 90633377-f76d-4d53-9675-43240c2d6f62
