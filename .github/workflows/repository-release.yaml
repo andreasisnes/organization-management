@@ -28,7 +28,6 @@ jobs:
   at:
     name: AT2[1-5]
     uses: "./.github/workflows/repository-template.yaml"
-    secrets: tr
     strategy:
       fail-fast: false
       matrix:
