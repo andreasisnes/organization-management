@@ -22,12 +22,13 @@ permissions:
   contents: write
 
 env:
-  log_level: ${{ inputs.log_level == "" || INFO }}
+  log_level: ${{ inputs.log_level == "" || "INFO" }}
 
 jobs:
   at:
     name: AT2[1-5]
     uses: "./.github/workflows/repository-template.yaml"
+    secrets: tr
     strategy:
       fail-fast: false
       matrix:
