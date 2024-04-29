@@ -98,6 +98,10 @@ resource "github_repository_environment" "environment" {
   environment = var.environment
   repository  = each.key
 
+  lifecycle {
+    prevent_destroy = true
+  }
+
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
