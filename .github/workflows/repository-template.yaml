@@ -59,4 +59,8 @@ jobs:
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
           ARM_USE_OIDC: true
         run: |
-          terraform apply -auto-approve
+          terraform apply -auto-approve \
+            -var arm_storage_account_name=${{ vars.ARM_STORAGE_ACCOUNT_NAME }}" \
+            -var arm_resource_group_name=${{ vars.ARM_RESOURCE_GROUP_NAME }}" \
+            -var environment=${{ inputs.environment }} \
+            -var github_token=${{ }}

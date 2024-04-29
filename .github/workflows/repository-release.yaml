@@ -29,7 +29,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        environment: [at21, at22, AT23, AT24, TT02]
+        environment: [AT21, AT22, AT23, AT24, AT25]
     with:
       environment: ${{ matrix.environment }}
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}

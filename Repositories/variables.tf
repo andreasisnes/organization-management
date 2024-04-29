@@ -7,12 +7,12 @@ variable "repository_file" {
 }
 
 variable "environment" {
-  type    = string
-  default = "dev"
+  type = string
 }
 
 variable "github_token" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "arm_storage_account_name" {
