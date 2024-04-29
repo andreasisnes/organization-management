@@ -25,6 +25,7 @@ jobs:
   at:
     name: AT2[1-5]
     uses: "./.github/workflows/repository-template.yaml"
+    secrets: inherit
     strategy:
       fail-fast: false
       matrix:
@@ -34,17 +35,19 @@ jobs:
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
 
   tt02:
+    uses: "./.github/workflows/repository-template.yaml"
     name: TT02
     needs: at
-    uses: "./.github/workflows/repository-template.yaml"
+    secrets: inherit
     with:
       environment: TT02
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
 
   prod:
+    uses: "./.github/workflows/repository-template.yaml"
     name: PROD
     needs: tt02
-    uses: "./.github/workflows/repository-template.yaml"
+    secrets: inherit
     with:
       environment: PROD
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
