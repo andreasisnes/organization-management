@@ -54,10 +54,9 @@ data "azurerm_storage_container" "github_container" {
 }
 
 resource "azuread_application" "app_oidc" {
-  display_name            = "GitHub ${each.key} OIDC"
+  display_name            = "GitHub: ${each.key} ${local.environment} OIDC"
   prevent_duplicate_names = true
-
-  for_each = { for team in local.teams : team.name => team }
+  for_each                = { for team in local.teams : team.name => team }
 }
 
 resource "azuread_service_principal" "app_oidc_principal" {
