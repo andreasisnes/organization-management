@@ -20,7 +20,7 @@ on:
 jobs:
   at:
     name: AT2[1-5]
-    uses: ".github/workflows/repository-template.yaml"
+    uses: "./.github/workflows/repository-template.yaml"
     strategy:
       fail-fast: false
       matrix:
@@ -31,14 +31,14 @@ jobs:
 
   tt02:
     name: TT02
-    uses: ".github/workflows/repository-template.yaml"
+    uses: "./.github/workflows/repository-template.yaml"
     with:
       environment: TT02
       log_level: ${{ inputs.log_level }}
 
   prod:
     name: PROD
-    uses: ".github/workflows/repository-template.yaml"
+    uses: "./.github/workflows/repository-template.yaml"
     with:
       environment: PROD
       log_level: ${{ inputs.log_level }}
