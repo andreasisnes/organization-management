@@ -54,7 +54,7 @@ data "azurerm_storage_container" "github_container" {
 }
 
 resource "azuread_application" "app_oidc" {
-  display_name            = "GitHub: ${each.key} ${local.environment} OIDC"
+  display_name            = "GitHub: ${each.key} ${upper(local.environment)} OIDC"
   prevent_duplicate_names = true
   for_each                = { for team in local.teams : team.name => team }
 }
@@ -77,7 +77,12 @@ resource "azuread_application_federated_identity_credential" "identity_federatio
 resource "azurerm_storage_container" "repository" {
   name                 = "github-${each.key}-${local.environment}"
   storage_account_name = data.azurerm_storage_account.st.name
-  for_each             = { for repository in local.repositories : repository.name => repository.team }
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
 resource "azurerm_role_assignment" "app" {
