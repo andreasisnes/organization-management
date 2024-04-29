@@ -43,7 +43,7 @@ jobs:
 
   prod:
     name: PROD
-    needs: prod
+    needs: tt02
     uses: "./.github/workflows/repository-template.yaml"
     with:
       environment: PROD
