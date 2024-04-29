@@ -1,0 +1,44 @@
+name: Repository Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      log_level:
+        required: true
+        description: "Terraform Log Level"
+        default: INFO
+        type: choice
+        options:
+          - TRACE
+          - DEBUG
+          - INFO
+          - WARN
+          - ERROR
+
+jobs:
+  at:
+    name: AT2[1-5]
+    uses: ".github/workflows/repository-template.yaml"
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [AT21, AT22, AT23, AT24, TT02]
+    with:
+      environment: ${ matrix.environment }}
+      log_level: ${{ inputs.log_level }}
+
+  tt02:
+    name: TT02
+    uses: ".github/workflows/repository-template.yaml"
+    with:
+      environment: TT02
+      log_level: ${{ inputs.log_level }}
+
+  prod:
+    name: PROD
+    uses: ".github/workflows/repository-template.yaml"
+    with:
+      environment: PROD
+      log_level: ${{ inputs.log_level }}

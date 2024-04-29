@@ -1,0 +1,50 @@
+name: Repository Template
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      log_level:
+        required: true
+        type: string
+
+env:
+  TERRAFORM_VERSION: 1.7.4
+
+jobs:
+  release:
+    permissions:
+      contents: write
+    environment: ${{ inputs.environment }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v1
+      - name: Terraform Install
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+          terraform_wrapper: false
+      - name: Terraform Set Logger
+        run: |
+          export TF_LOG="${{ inputs.log_level }}"
+      - name: Terraform Init State
+        working-directory: Repositories
+        env:
+          ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
+          ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
+          ARM_USE_OIDC: true
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=${{ vars.ARM_RESOURCE_GROUP_NAME }}" \
+            -backend-config="storage_account_name=${{ vars.ARM_STORAGE_ACCOUNT_NAME }}" \
+            -backend-config="container_name=github-${GITHUB_REPOSITORY#*/}-dev" \
+            -backend-config="key=tfstate"
+
+      - name: Terraform Apply
+        working-directory: Repositories
+        run: |
+          terraform -auto-approve
