@@ -23,13 +23,13 @@ permissions:
 
 jobs:
   at:
-    name: AT2[1-5]
+    name: AT
     uses: "./.github/workflows/repository-template.yaml"
     secrets: inherit
     strategy:
       fail-fast: false
       matrix:
-        environment: [AT21, AT22, AT23, AT24, TT02]
+        environment: [at21, at22, AT23, AT24, TT02]
     with:
       environment: ${{ matrix.environment }}
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
