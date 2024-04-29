@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 env:
-  log_level: ${{ inputs.log_level == "" || "INFO" }}
+  log_level: ${{ inputs.log_level == "" && "INFO" || inputs.log_level }}
 
 jobs:
   at:
