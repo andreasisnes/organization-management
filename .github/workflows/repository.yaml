@@ -15,6 +15,11 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v1
+      - name: Set Context
+        run: |
+          export ARM_CLIENT_ID="3652cacb-6e22-49fd-9c08-bca5c11a285c"
+          export ARM_SUBSCRIPTION_ID="ff5f6913-f6bc-420c-ba78-5bc1e3fe4895"
+          export ARM_TENANT_ID="90633377-f76d-4d53-9675-43240c2d6f62"
       - name: AZ login
         uses: azure/login@v2
         with:
