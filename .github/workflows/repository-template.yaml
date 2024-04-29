@@ -20,14 +20,17 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v1
+
       - name: Terraform Install
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
           terraform_wrapper: false
+
       - name: Terraform Set Logger
         run: |
           export TF_LOG="${{ inputs.log_level }}"
+
       - name: Terraform Init State
         working-directory: Repositories
         env:
@@ -45,4 +48,4 @@ jobs:
       - name: Terraform Apply
         working-directory: Repositories
         run: |
-          terraform -auto-approve
+          terraform apply -auto-approve
