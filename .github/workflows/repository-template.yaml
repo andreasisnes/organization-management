@@ -15,8 +15,6 @@ env:
 
 jobs:
   release:
-    permissions:
-      contents: write
     environment: ${{ inputs.environment }}
     runs-on: ubuntu-latest
     steps:
