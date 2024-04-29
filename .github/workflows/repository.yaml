@@ -1,16 +1,15 @@
 name: Repository
 on: [push]
 
-permissions:
-  id-token: write
-  contents: write
-
 env:
   TERRAFORM_VERSION: 1.7.4
 
 jobs:
   deploy:
     environment: dev
+    permissions:
+      id-token: write
+      contents: write
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -26,6 +25,12 @@ jobs:
           client-id: 3652cacb-6e22-49fd-9c08-bca5c11a285c
           tenant-id: 90633377-f76d-4d53-9675-43240c2d6f62
           subscription-id: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      - name: Azure CLI script
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az account show
       - name: Terraform Install
         uses: hashicorp/setup-terraform@v2
         with:
