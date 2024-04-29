@@ -37,6 +37,8 @@ jobs:
       - name: Terraform Set Logger
         run: |
           export TF_LOG="${{ inputs.log_level }}"
+          ENVIRONMENT=$(echo "${{ inputs.environment }}" | tr '[:upper:]' '[:lower:]')
+          echo "Lowercase variable: $LOWERCASE_VARIABLE"
 
       - name: Terraform Init State
         working-directory: Repositories
@@ -49,7 +51,7 @@ jobs:
           terraform init \
             -backend-config="resource_group_name=${{ vars.ARM_RESOURCE_GROUP_NAME }}" \
             -backend-config="storage_account_name=${{ vars.ARM_STORAGE_ACCOUNT_NAME }}" \
-            -backend-config="container_name=github-${GITHUB_REPOSITORY#*/}-${{ inputs.environment }}" \
+            -backend-config="container_name=github-${GITHUB_REPOSITORY#*/}-$ENVIRONMENT" \
             -backend-config="key=tfstate"
       - name: Terraform Apply
         working-directory: Repositories
