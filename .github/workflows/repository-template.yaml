@@ -37,8 +37,7 @@ jobs:
       - name: Terraform Set Logger
         run: |
           export TF_LOG="${{ inputs.log_level }}"
-          ENVIRONMENT=$(echo "${{ inputs.environment }}" | tr '[:upper:]' '[:lower:]')
-          echo "Lowercase variable: $LOWERCASE_VARIABLE"
+          ENVIRONMENT=$$(echo "${{ inputs.environment }}" | tr '[:upper:]' '[:lower:]')
 
       - name: Terraform Init State
         working-directory: Repositories
