@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 env:
-  log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
+  LOG_LEVEL: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
 
 jobs:
   at:
@@ -34,7 +34,7 @@ jobs:
         environment: [AT21, AT22, AT23, AT24, TT02]
     with:
       environment: ${{ matrix.environment }}
-      log_level: ${{ env.log_level }}
+      log_level: ${{ env.LOG_LEVEL }}
 
   tt02:
     name: TT02
@@ -42,7 +42,7 @@ jobs:
     uses: "./.github/workflows/repository-template.yaml"
     with:
       environment: TT02
-      log_level: ${{ env.log_level }}
+      log_level: ${{ env.LOG_LEVEL }}
 
   prod:
     name: PROD
@@ -50,4 +50,4 @@ jobs:
     uses: "./.github/workflows/repository-template.yaml"
     with:
       environment: PROD
-      log_level: ${{ env.log_level }}
+      log_level: ${{ env.LOG_LEVEL }}
