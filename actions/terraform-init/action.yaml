@@ -1,30 +1,34 @@
 name: "Terraform Initialize"
 description: "Greet someone"
 inputs:
+  working_dir:
+    description: Terraform project
+    default: ./infrastructure
+    required: true
+  environment:
+    description: Environment <AT21, AT22, AT23, AT24, AT25, TT02, PROD>
   arm_client_id:
+    required: true
     description: Azure Client ID
-    default: ""
   arm_subscription_id:
+    required: true
     description: Azure Subscription ID
-    default: ""
+    default: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
   arm_tenant_id:
     description: Azure Tenant ID
-    default: ""
+    default: 90633377-f76d-4d53-9675-43240c2d6f62
   arm_resource_group_name:
-    description: REsource Group Name
-    default: ""
+    description: Resource Group Name
+    default: rgandreasisnesstorage001
   arm_storage_account_name:
     description: Storage Account Name
-    default: ""
+    default: standreasisnesstorage001
   tf_version:
     description: Terraform Version
     default: 1.7.4
   tf_log_level:
     description: "Log level"
-  working_dir:
-    description: Terraform project
-  environment:
-    description: Environment <AT21, AT22, AT23, AT24, AT25, TT02, PROD>
+    default: "INFO"
 
 runs:
   using: "composite"
