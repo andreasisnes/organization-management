@@ -39,9 +39,6 @@ runs:
         terraform_version: ${{ inputs.tf_version }}
         terraform_wrapper: false
 
-    - name: Echo
-      shell: bash
-      run: echo ${{ vars.ARM_STORAGE_ACCOUNT_NAME }}
     - name: Terraform Set Logger
       shell: bash
       run: export TF_LOG="${{ inputs.tf_log_level == '' && 'INFO' || inputs.tf_log_level }}"
