@@ -1,7 +1,7 @@
 name: "Terraform Initialize"
 description: "Greet someone"
 inputs:
-  working_dir:
+  working_directory:
     description: Terraform project
     default: ./infrastructure
     required: true
@@ -45,7 +45,7 @@ runs:
 
     - name: Terraform Init State
       shell: bash
-      working-directory: ${{ inputs.working_dir }}
+      working-directory: ${{ inputs.working_directory }}
       env:
         ARM_CLIENT_ID: ${{ inputs.arm_client_id }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.arm_subscription_id }}
