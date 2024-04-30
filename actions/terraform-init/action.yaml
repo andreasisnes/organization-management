@@ -3,19 +3,19 @@ description: "Greet someone"
 inputs:
   arm_client_id:
     description: Azure Client ID
-    default: ${{ vars.ARM_CLIENT_ID }}
+    default: ""
   arm_subscription_id:
     description: Azure Subscription ID
-    default: ${{ vars.ARM_SUBSCRIPTION_ID }}
+    default: ""
   arm_tenant_id:
     description: Azure Tenant ID
-    default: ${{ vars.ARM_TENANT_ID }}
+    default: ""
   arm_resource_group_name:
     description: REsource Group Name
-    default: ${{ vars.ARM_RESOURCE_GROUP_NAME }}
+    default: ""
   arm_storage_account_name:
     description: Storage Account Name
-    default: ${{ vars.ARM_STORAGE_ACCOUNT_NAME }}
+    default: ""
   tf_version:
     description: Terraform Version
     default: 1.7.4
@@ -35,6 +35,9 @@ runs:
         terraform_version: ${{ inputs.tf_version }}
         terraform_wrapper: false
 
+    - name: Echo
+      shell: bash
+      run: echo ${{ vars.ARM_STORAGE_ACCOUNT_NAME }}
     - name: Terraform Set Logger
       shell: bash
       run: export TF_LOG="${{ inputs.tf_log_level == '' && 'INFO' || inputs.tf_log_level }}"
