@@ -1,0 +1,44 @@
+name: "Terraform Initialize"
+description: "Greet someone"
+inputs:
+  client_id:
+    description: Azure Client ID
+    default: ${{ vars.ARM_CLIENT_ID }}
+  subscription_id:
+    description: Azure Subscription ID
+    default: ${{ vars.ARM_SUBSCRIPTION_ID }}
+  tenant_id:
+    description: Azure Tenant ID
+    default: ${{ vars.ARM_TENANT_ID }}
+  working_dir:
+    description: Terraform project
+  environment:
+    description: Environment <AT21, AT22, AT23, AT24, AT25, TT02, PROD>
+
+runs:
+  using: "composite"
+  steps:
+    - name: Terraform Install
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: ${{ env.TERRAFORM_VERSION }}
+        terraform_wrapper: false
+
+    - name: Terraform Set Logger
+      shell: bash
+      run: export TF_LOG="${{ inputs.log_level }}"
+
+    - name: Terraform Init State
+      shell: bash
+      working-directory: Repositories
+      env:
+        ARM_CLIENT_ID: ${{ inputs.ARM_CLIENT_ID }}
+        ARM_SUBSCRIPTION_ID: ${{ inputs.ARM_SUBSCRIPTION_ID }}
+        ARM_TENANT_ID: ${{ inputs.ARM_TENANT_ID }}
+        ARM_USE_OIDC: "true"
+      run: |
+        terraform init \
+          -backend-config="resource_group_name=${{ vars.ARM_RESOURCE_GROUP_NAME }}" \
+          -backend-config="storage_account_name=${{ vars.ARM_STORAGE_ACCOUNT_NAME }}" \
+          -backend-config="container_name=$(echo "github-${GITHUB_REPOSITORY#*/}-${{ inputs.environment }}" | tr '[:upper:]' '[:lower:]')" \
+          -backend-config="key=tfstate"
