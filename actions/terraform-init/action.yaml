@@ -45,7 +45,7 @@ runs:
 
     - name: Terraform Init State
       shell: bash
-      working-directory: Repositories
+      working-directory: ${{ inputs.working_dir }}
       env:
         ARM_CLIENT_ID: ${{ inputs.arm_client_id }}
         ARM_SUBSCRIPTION_ID: ${{ inputs.arm_subscription_id }}
