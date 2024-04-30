@@ -39,7 +39,7 @@ jobs:
           export TF_LOG="${{ inputs.log_level }}"
 
       - name: Terraform Init State
-        working-directory: Repositories
+        working-directory: repositories
         env:
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
@@ -52,7 +52,7 @@ jobs:
             -backend-config="container_name=$(echo "github-${GITHUB_REPOSITORY#*/}-${{ inputs.environment }}" | tr '[:upper:]' '[:lower:]')" \
             -backend-config="key=tfstate"
       - name: Terraform Apply
-        working-directory: Repositories
+        working-directory: repositories
         env:
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
