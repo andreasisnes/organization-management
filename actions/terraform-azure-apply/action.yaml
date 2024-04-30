@@ -16,6 +16,7 @@ inputs:
     default: 90633377-f76d-4d53-9675-43240c2d6f62
   tf_args:
     description: Args
+    required: false
   tf_version:
     description: Terraform Version
     default: 1.7.4
