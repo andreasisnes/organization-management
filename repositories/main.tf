@@ -99,9 +99,14 @@ resource "azurerm_role_assignment" "app" {
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
+data "github_repository" "repository" {
+  full_name = "${local.file_content.organization}/${each.key}"
+  for_each  = { for repository in local.repositories : repository.name => repository.team }
+}
+
 resource "github_repository_environment" "environment" {
   environment = local.environment
-  repository  = each.key
+  repository  = data.github_repository.repository.name
 
   lifecycle {
     prevent_destroy = true
@@ -113,15 +118,16 @@ resource "github_repository_environment" "environment" {
 resource "github_actions_environment_variable" "arm_client_id" {
   variable_name = "ARM_CLIENT_ID"
   value         = azuread_application.app_oidc[each.value.name].client_id
-  repository    = each.key
-  environment   = github_repository_environment.environment[each.key].id
-  for_each      = { for repository in local.repositories : repository.name => repository.team }
+  repository    = data.github_repository.repository.name
+
+  environment = github_repository_environment.environment[each.key].id
+  for_each    = { for repository in local.repositories : repository.name => repository.team }
 }
 
 resource "github_actions_environment_variable" "tfstate_arm_storage_account_name" {
   variable_name = "ARM_TFSTATE_STORAGE_ACCOUNT_NAME"
   value         = var.arm_storage_account_name
-  repository    = each.key
+  repository    = data.github_repository.repository.name
   environment   = github_repository_environment.environment[each.key].id
   for_each      = { for repository in local.repositories : repository.name => repository.team }
 }
@@ -129,7 +135,7 @@ resource "github_actions_environment_variable" "tfstate_arm_storage_account_name
 resource "github_actions_environment_variable" "arm_tenant_id" {
   variable_name = "ARM_TENANT_ID"
   value         = data.azurerm_client_config.current.tenant_id
-  repository    = each.key
+  repository    = data.github_repository.repository.name
   environment   = github_repository_environment.environment[each.key].id
   for_each      = { for repository in local.repositories : repository.name => repository.team }
 }
