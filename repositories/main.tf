@@ -101,7 +101,7 @@ resource "azurerm_role_assignment" "app" {
 
 resource "github_repository_environment" "environment" {
   environment = local.environment
-  repository  = "${local.file_content.organization}/${each.key}"
+  repository  = "andreasisnes/${each.key}"
   for_each    = { for repository in local.repositories : repository.name => repository.team }
 }
 
