@@ -101,8 +101,9 @@ resource "azurerm_role_assignment" "app" {
 
 resource "github_repository_environment" "environment" {
   environment = local.environment
-  repository  = "andreasisnes/${each.key}"
-  for_each    = { for repository in local.repositories : repository.name => repository.team }
+
+  repository = each.key
+  for_each   = { for repository in local.repositories : repository.name => repository.team }
 }
 
 resource "github_actions_environment_variable" "arm_client_id" {
