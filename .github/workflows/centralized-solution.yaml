@@ -1,4 +1,4 @@
-name: Repository Release
+name: Centralized Solution
 
 on:
   push:
@@ -24,7 +24,7 @@ permissions:
 jobs:
   at:
     name: AT
-    uses: "./.github/workflows/repository-template.yaml"
+    uses: "./.github/workflows/centralized-solution-template.yaml"
     secrets: inherit
     strategy:
       fail-fast: false
@@ -35,7 +35,7 @@ jobs:
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
 
   tt02:
-    uses: "./.github/workflows/repository-template.yaml"
+    uses: "./.github/workflows/centralized-solution-template.yaml"
     name: TT02
     needs: at
     secrets: inherit
@@ -44,7 +44,7 @@ jobs:
       log_level: ${{ inputs.log_level == '' && 'INFO' || inputs.log_level }}
 
   prod:
-    uses: "./.github/workflows/repository-template.yaml"
+    uses: "./.github/workflows/centralized-solution-template.yaml"
     name: PROD
     needs: tt02
     secrets: inherit

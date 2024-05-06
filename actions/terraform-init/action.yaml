@@ -1,5 +1,5 @@
 name: "Terraform Initialize"
-description: "Greet someone"
+description: "Initializes terraform state"
 inputs:
   working_directory:
     description: Terraform project

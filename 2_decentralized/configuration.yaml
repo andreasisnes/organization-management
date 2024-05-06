@@ -4,10 +4,14 @@ repositories:
   - access-management
   - access-management-frontend
   - authorization
+
 subscriptions:
-  dev: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
-  test: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
-  staging: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+  at21: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+  at22: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+  at23: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+  at24: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+  at25: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+  tt02: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
   prod: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
 
 members:

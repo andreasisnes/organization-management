@@ -19,11 +19,13 @@ terraform {
   }
 }
 
+# https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 provider "azurerm" {
   use_oidc = true
-  features {}
+  features {} # Required
 }
 
+# https://registry.terraform.io/providers/integrations/github/latest/docs
 provider "github" {
   owner = local.file_content.organization
   app_auth {} # Required
@@ -119,15 +121,6 @@ resource "github_actions_environment_variable" "arm_client_id" {
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
-resource "github_actions_environment_variable" "tfstate_arm_storage_account_name" {
-  variable_name = "ARM_TFSTATE_STORAGE_ACCOUNT_NAME"
-  value         = var.arm_storage_account_name
-  repository    = github_repository_environment.environment[each.key].repository
-  environment   = github_repository_environment.environment[each.key].environment
-
-  for_each = { for repository in local.repositories : repository.name => repository.team }
-}
-
 resource "github_actions_environment_variable" "arm_tenant_id" {
   variable_name = "ARM_TENANT_ID"
   value         = data.azurerm_client_config.current.tenant_id
@@ -137,3 +130,20 @@ resource "github_actions_environment_variable" "arm_tenant_id" {
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
+resource "github_actions_environment_variable" "arm_tfstate_resource_group_name" {
+  variable_name = "ARM_TFSTATE_RESOURCE_GROUP_NAME"
+  value         = var.arm_resource_group_name
+  repository    = github_repository_environment.environment[each.key].repository
+  environment   = github_repository_environment.environment[each.key].environment
+
+  for_each = { for repository in local.repositories : repository.name => repository.team }
+}
+
+resource "github_actions_environment_variable" "arm_tfstate_storage_account_name" {
+  variable_name = "ARM_TFSTATE_STORAGE_ACCOUNT_NAME"
+  value         = var.arm_storage_account_name
+  repository    = github_repository_environment.environment[each.key].repository
+  environment   = github_repository_environment.environment[each.key].environment
+
+  for_each = { for repository in local.repositories : repository.name => repository.team }
+}

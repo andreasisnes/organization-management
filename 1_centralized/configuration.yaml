@@ -1,0 +1,12 @@
+organization: andreasisnes
+teams:
+  - name: Team Access Management
+    repositories:
+      - access-management
+      - access-management-frontend
+      - authorization
+
+  - name: Team Access Information
+    repositories:
+      - authentication
+      - resource-registry

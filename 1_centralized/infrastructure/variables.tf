@@ -1,6 +1,6 @@
 variable "repository_file" {
   type        = string
-  default     = "../organization.yaml"
+  default     = "configuration.yaml"
   nullable    = false
   description = "YAML file that describes"
   sensitive   = false
