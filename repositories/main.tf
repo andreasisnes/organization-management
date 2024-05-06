@@ -108,10 +108,6 @@ resource "github_repository_environment" "environment" {
   environment = local.environment
   repository  = data.github_repository.repository[each.key].name
 
-  lifecycle {
-    prevent_destroy = true
-  }
-
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
@@ -119,9 +115,9 @@ resource "github_actions_environment_variable" "arm_client_id" {
   variable_name = "ARM_CLIENT_ID"
   value         = azuread_application.app_oidc[each.value.name].client_id
   repository    = data.github_repository.repository[each.key].name
+  environment   = github_repository_environment.environment[each.key].id
 
-  environment = github_repository_environment.environment[each.key].id
-  for_each    = { for repository in local.repositories : repository.name => repository.team }
+  for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
 resource "github_actions_environment_variable" "tfstate_arm_storage_account_name" {
@@ -129,7 +125,8 @@ resource "github_actions_environment_variable" "tfstate_arm_storage_account_name
   value         = var.arm_storage_account_name
   repository    = data.github_repository.repository[each.key].name
   environment   = github_repository_environment.environment[each.key].id
-  for_each      = { for repository in local.repositories : repository.name => repository.team }
+
+  for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
 resource "github_actions_environment_variable" "arm_tenant_id" {
@@ -137,5 +134,6 @@ resource "github_actions_environment_variable" "arm_tenant_id" {
   value         = data.azurerm_client_config.current.tenant_id
   repository    = data.github_repository.repository[each.key].name
   environment   = github_repository_environment.environment[each.key].id
-  for_each      = { for repository in local.repositories : repository.name => repository.team }
+
+  for_each = { for repository in local.repositories : repository.name => repository.team }
 }
