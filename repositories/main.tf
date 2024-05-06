@@ -8,10 +8,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "3.100.0"
     }
-    # github = {
-    #   source  = "integrations/github"
-    #   version = "~> 6.0"
-    # }
+    github = {
+      source  = "integrations/github"
+      version = "~> 6.0"
+    }
   }
 
   backend "azurerm" {
@@ -19,19 +19,17 @@ terraform {
   }
 }
 
-# provider "github" {
-#   token = var.github_token
-# }
-
 provider "azurerm" {
   use_oidc = true
-  features {}
+  features {
+  }
 }
 
 locals {
   environment  = lower(var.environment)
   file_content = yamldecode(file(var.repository_file))
   teams        = [for team in local.file_content.teams : team]
+
   repositories = flatten([for team in local.file_content.teams :
     [
       for repository in team.repositories :
@@ -42,6 +40,8 @@ locals {
     ]
   ])
 }
+
+data "azurerm_client_config" "current" {}
 
 data "azurerm_storage_account" "st" {
   name                = var.arm_storage_account_name
@@ -54,7 +54,7 @@ data "azurerm_storage_container" "github_container" {
 }
 
 resource "azuread_application" "app_oidc" {
-  display_name            = "GitHub: ${each.key} ${upper(local.environment)} OIDC"
+  display_name            = "GitHub: ${each.key} ${upper(local.environment)}"
   prevent_duplicate_names = true
   for_each                = { for team in local.teams : team.name => team }
 }
@@ -99,26 +99,37 @@ resource "azurerm_role_assignment" "app" {
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
-# resource "github_repository_environment" "environment" {
-#   environment = local.environment
-#   repository  = each.key
+resource "github_repository_environment" "environment" {
+  environment = local.environment
+  repository  = each.key
 
-#   lifecycle {
-#     prevent_destroy = true
-#   }
+  lifecycle {
+    prevent_destroy = true
+  }
 
-#   for_each = { for repository in local.repositories : repository.name => repository.team }
-# }
-
-# resource "github_actions_environment_variable" "client_id" {
-#   variable_name = "ARM_CLIENT_ID"
-#   value         = azuread_application.app_oidc[each.value.name].client_id
-#   repository    = each.key
-#   environment   = github_repository_environment.environment[each.key].id
-#   for_each      = { for repository in local.repositories : repository.name => repository.team }
-# }
-
-output "test" {
-  value = azurerm_role_assignment.app
+  for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
+resource "github_actions_environment_variable" "arm_client_id" {
+  variable_name = "ARM_CLIENT_ID"
+  value         = azuread_application.app_oidc[each.value.name].client_id
+  repository    = each.key
+  environment   = github_repository_environment.environment[each.key].id
+  for_each      = { for repository in local.repositories : repository.name => repository.team }
+}
+
+resource "github_actions_environment_variable" "tfstate_arm_storage_account_name" {
+  variable_name = "ARM_TFSTATE_STORAGE_ACCOUNT_NAME"
+  value         = var.arm_storage_account_name
+  repository    = each.key
+  environment   = github_repository_environment.environment[each.key].id
+  for_each      = { for repository in local.repositories : repository.name => repository.team }
+}
+
+resource "github_actions_environment_variable" "arm_tenant_id" {
+  variable_name = "ARM_TENANT_ID"
+  value         = data.azurerm_client_config.current.tenant_id
+  repository    = each.key
+  environment   = github_repository_environment.environment[each.key].id
+  for_each      = { for repository in local.repositories : repository.name => repository.team }
+}

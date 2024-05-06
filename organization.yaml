@@ -1,12 +1,23 @@
-organization: andreasisnes
+organization: altinn
 teams:
   - name: Team Access Management
+    subscriptions:
+      dev: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      test: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      staging: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      prod: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
     repositories:
       - access-management
       - access-management-frontend
       - authorization
 
   - name: Team Access Information
+    subscriptions:
+      dev: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      test: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      staging: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+      prod: ff5f6913-f6bc-420c-ba78-5bc1e3fe4895
+
     repositories:
       - authentication
       - resource-registry
