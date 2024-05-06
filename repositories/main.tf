@@ -108,8 +108,8 @@ resource "github_repository_environment" "environment" {
 resource "github_actions_environment_variable" "arm_client_id" {
   variable_name = "ARM_CLIENT_ID"
   value         = azuread_application.app_oidc[each.value.name].client_id
-  repository    = "${local.file_content.organization}/${each.key}"
-  environment   = github_repository_environment.environment[each.key].id
+  repository    = github_repository_environment.environment[each.key].repository
+  environment   = github_repository_environment.environment[each.key].environment
 
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
@@ -117,8 +117,8 @@ resource "github_actions_environment_variable" "arm_client_id" {
 resource "github_actions_environment_variable" "tfstate_arm_storage_account_name" {
   variable_name = "ARM_TFSTATE_STORAGE_ACCOUNT_NAME"
   value         = var.arm_storage_account_name
-  repository    = "${local.file_content.organization}/${each.key}"
-  environment   = github_repository_environment.environment[each.key].id
+  repository    = github_repository_environment.environment[each.key].repository
+  environment   = github_repository_environment.environment[each.key].environment
 
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
@@ -126,8 +126,8 @@ resource "github_actions_environment_variable" "tfstate_arm_storage_account_name
 resource "github_actions_environment_variable" "arm_tenant_id" {
   variable_name = "ARM_TENANT_ID"
   value         = data.azurerm_client_config.current.tenant_id
-  repository    = "${local.file_content.organization}/${each.key}"
-  environment   = github_repository_environment.environment[each.key].id
+  repository    = github_repository_environment.environment[each.key].repository
+  environment   = github_repository_environment.environment[each.key].environment
 
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
