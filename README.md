@@ -11,3 +11,7 @@
 * Container can max contain 64 chars, with prefix `github-` and suffix `-at21` allows repositories to have max length of max `51` chars. repo `altinn-access-management-frontend` has 33 chars.
 * Number of OIDC apps will skyrock. Hard to maintain access to these manually, needs automation!
 * Difficult to create new setups that diverges from the domain's design
+
+
+## Docs
+* [Authenticate as app](https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app)
