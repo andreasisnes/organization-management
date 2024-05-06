@@ -25,6 +25,10 @@ provider "azurerm" {
   }
 }
 
+provider "github" {
+  owner = local.file_content.organization
+}
+
 locals {
   environment  = lower(var.environment)
   file_content = yamldecode(file(var.repository_file))
