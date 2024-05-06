@@ -132,6 +132,3 @@ resource "github_actions_environment_variable" "arm_tenant_id" {
   for_each = { for repository in local.repositories : repository.name => repository.team }
 }
 
-output "test" {
-  value = data.github_repository.repository
-}
