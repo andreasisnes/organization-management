@@ -27,6 +27,7 @@ provider "azurerm" {
 
 provider "github" {
   owner = local.file_content.organization
+  app_auth {} # Required
 }
 
 locals {
