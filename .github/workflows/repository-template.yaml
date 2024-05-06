@@ -28,12 +28,6 @@ jobs:
           tenant-id: ${{ vars.ARM_TENANT_ID }}
           subscription-id: ${{ vars.ARM_SUBSCRIPTION_ID }}
 
-      - uses: tibdex/github-app-token@v1
-        id: get_installation_token
-        with:
-          app_id: 892064
-          private_key: ${{ secrets.GH_PRIVATE_KEY }}
-
       - name: Terraform Install
         uses: hashicorp/setup-terraform@v3
         with:
@@ -60,6 +54,8 @@ jobs:
       - name: Terraform Apply
         working-directory: repositories
         env:
+          GITHUB_APP_ID: 892064
+          GITHUB_GITHUB_APP_PEM_FILE: ${{ secrets.GH_PRIVATE_KEY }}
           ARM_CLIENT_ID: ${{ vars.ARM_CLIENT_ID }}
           ARM_SUBSCRIPTION_ID: ${{ vars.ARM_SUBSCRIPTION_ID }}
           ARM_TENANT_ID: ${{ vars.ARM_TENANT_ID }}
