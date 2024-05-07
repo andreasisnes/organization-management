@@ -1,0 +1,3 @@
+# Background
+The team access management is planning to transition from hosting services on team platform infrastructure's to their own infrastructure. Currently, there are four subscriptions under team access management: dev, test, staging, and prod. To facilitate the setup of new infrastructure, we require a solution for maintaining Terraform state. This repository presents two solutions: one advocates for a centralized approach, utilizing a single azure storage account to persist all Terraform states, while the other proposes a decentralized approach where each team manages its own storage account.
+

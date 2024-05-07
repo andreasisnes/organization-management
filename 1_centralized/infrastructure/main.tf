@@ -54,11 +54,6 @@ data "azurerm_storage_account" "st" {
   resource_group_name = var.arm_resource_group_name
 }
 
-data "azurerm_storage_container" "github_container" {
-  name                 = "github"
-  storage_account_name = data.azurerm_storage_account.st.name
-}
-
 resource "azuread_application" "app_oidc" {
   display_name            = "GitHub: ${each.key} ${upper(local.environment)}"
   prevent_duplicate_names = true
